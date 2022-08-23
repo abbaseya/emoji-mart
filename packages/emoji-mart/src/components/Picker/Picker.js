@@ -640,6 +640,15 @@ export default class Picker extends Component {
     Store.set('skin', skin)
   }
 
+  handleSectionClick() {
+    if (this.props.autoFocus) {
+      const { searchInput } = this.refs
+      if (searchInput.current) {
+        searchInput.current.focus()
+      }
+    }
+  }
+
   renderNav() {
     return (
       <Navigation
@@ -1063,6 +1072,7 @@ export default class Picker extends Component {
         data-emoji-set={this.props.set}
         data-theme={this.state.theme}
         data-menu={this.state.showSkins ? '' : undefined}
+        onClick={() => this.handleSectionClick()}
       >
         {this.props.previewPosition == 'top' && this.renderPreview()}
         {this.props.navPosition == 'top' && this.renderNav()}
