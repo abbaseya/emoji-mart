@@ -35,16 +35,19 @@ const FLUENT = glob.sync(path.resolve('./fluentui-emoji/assets/**/*.json'))
                   const flat = glob.sync(`${emoji.path}/Flat/*.svg`)
                   const mediumColor = glob.sync(`${emoji.path}/Medium/Color/*.svg`)
                   const mediumFlat = glob.sync(`${emoji.path}/Medium/Color/*.svg`)
-                  if (color[0] || mediumColor[0] || flat[0] || mediumFlat[0]) {
-                    const svg = readFileSync(color[0] || mediumColor[0] || flat[0] || mediumFlat[0], 'utf-8').toString()
+                  const icon = color[0] || mediumColor[0] || flat[0] || mediumFlat[0]
+                  if (icon) {
+                    const svg = readFileSync(icon, 'utf-8').toString()
                     const data = `data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, '%27').replace(/"/g, '%22')}`
-                    return [ { unified: emoji.meta.unicode.replace(/\s+/g, '-'), data } ]
+                    return [ { unified: emoji.meta.unicode.replace(/\s+/g, '-'), file: icon, data } ]
                   } else {
                     console.log('Unable to find color icon at', emoji.path)
                     return []
                   }
                 })
                 .flat()
+
+// console.log('FLUENT:', FLUENT.map(item => item.file))
 
 function unifiedToNative(unified) {
   let unicodes = unified.split('-')
