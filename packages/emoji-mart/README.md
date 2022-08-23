@@ -109,7 +109,7 @@ function App() {
 | **previewEmoji** | `point_up` | | The id of the emoji to use for the preview when not hovering any emoji. `point_up` when preview position is bottom and `point_down` when preview position is top. |
 | **previewPosition** | `bottom` | `top`, `bottom`, `none` | The position of the preview |
 | **searchPosition** | `sticky` | `sticky`, `static`, `none` | The position of the search input |
-| **set** | `native` | `native`, `apple`, `facebook`, `google`, `twitter` | The set of emojis to use for the picker. `native` being the most performant, others rely on spritesheets. |
+| **set** | `native` | `native`, `apple`, `facebook`, `google`, `twitter`, `fluentui` | The set of emojis to use for the picker. `native` being the most performant, others rely on spritesheets. |
 | **skin** | `1` | `1`, `2`, `3`, `4`, `5`, `6` | The emojis skin tone |
 | **skinTonePosition** | `preview` | `preview`, `search`, `none` | The position of the skin tone selector |
 | **theme** | `auto` | `auto`, `light`, `dark` | The color theme of the picker |
