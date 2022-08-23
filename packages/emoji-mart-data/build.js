@@ -14,7 +14,7 @@ const COPY_DEST = process.env.COPY_DEST || '';
 
 const VERSIONS = [1, 2, 3, 4, 5, 11, 12, 12.1, 13, 13.1, 14]
 const SKINS = ['1F3FB', '1F3FC', '1F3FD', '1F3FE', '1F3FF']
-const SETS = ['native', 'microsoft', 'apple', 'facebook', 'google', 'twitter']
+const SETS = ['native', 'apple', 'facebook', 'google', 'twitter', 'fluentui']
 const CATEGORIES = [
   ['Smileys & Emotion', 'smileys'],
   ['People & Body', 'people'],
@@ -69,7 +69,7 @@ function unifiedToNative(unified) {
 function buildData({ set, version } = {}) {
   const categoriesIndex = {}
   const nativeSet = set == 'native'
-  const fluentSet = set == 'microsoft'
+  const fluentSet = set == 'fluentui'
   const data = {
     categories: [],
     emojis: {},
