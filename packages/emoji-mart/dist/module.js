@@ -463,6 +463,7 @@ var $8984b9eb096f95f2$export$2e2bcd8739ae039 = {
         value: 'native',
         choices: [
             'native',
+            'microsoft',
             'apple',
             'facebook',
             'google',

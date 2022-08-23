@@ -71,7 +71,7 @@ export default {
   },
   set: {
     value: 'native',
-    choices: ['native', 'apple', 'facebook', 'google', 'twitter'],
+    choices: ['native', 'microsoft', 'apple', 'facebook', 'google', 'twitter'],
   },
   skin: {
     value: 1,
