@@ -247,6 +247,13 @@ new Picker({ i18n })
 
 Given the small file size, English is built-in and doesn’t need to be provided.
 
+## 🗺 FluentUI
+
+```js
+import data from 'emoji-mart/packages/emoji-mart-data/sets/14/fluentui.json'
+
+new Picker({ data })
+```
 ## 📚 Examples
 
 - [Categories](https://missiveapp.com/open/emoji-mart/example-categories.html)
