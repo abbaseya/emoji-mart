@@ -1,4 +1,5 @@
 const { mkdir, writeFile, rmSync, readFileSync } = require('fs')
+const { execSync } = require('child_process')
 const path = require('path')
 const glob = require('glob')
 
@@ -8,6 +9,8 @@ const emojiData = require('emoji-datasource')
 const unicodeEmoji = require('unicode-emoji-json')
 
 const DRY_RUN = process.argv.indexOf('--dry') != -1
+const CDN_BASE = process.env.CDN_BASE || '';
+const COPY_DEST = process.env.COPY_DEST || '';
 
 const VERSIONS = [1, 2, 3, 4, 5, 11, 12, 12.1, 13, 13.1, 14]
 const SKINS = ['1F3FB', '1F3FC', '1F3FD', '1F3FE', '1F3FF']
@@ -37,17 +40,24 @@ const FLUENT = glob.sync(path.resolve('./fluentui-emoji/assets/**/*.json'))
                   const mediumFlat = glob.sync(`${emoji.path}/Medium/Color/*.svg`)
                   const icon = color[0] || mediumColor[0] || flat[0] || mediumFlat[0]
                   if (icon) {
+                    const clean = path.basename(icon).replace(/(\(|\))/g, '')
                     const svg = readFileSync(icon, 'utf-8').toString()
                     const data = `data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, '%27').replace(/"/g, '%22')}`
-                    return [ { unified: emoji.meta.unicode.replace(/\s+/g, '-'), file: icon, data } ]
+                    if (COPY_DEST) {
+                      execSync(`cp ${icon.replace(/\s+/g, '\\ ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')} ${path.resolve(COPY_DEST)}/${clean}`)
+                    }
+                    return [ {
+                      unified: emoji.meta.unicode.replace(/\s+/g, '-'),
+                      file: icon,
+                      url: `${CDN_BASE}/${clean}`,
+                      data
+                    } ]
                   } else {
                     console.log('Unable to find color icon at', emoji.path)
                     return []
                   }
                 })
                 .flat()
-
-// console.log('FLUENT:', FLUENT.map(item => item.file))
 
 function unifiedToNative(unified) {
   let unicodes = unified.split('-')
@@ -156,7 +166,7 @@ function buildData({ set, version } = {}) {
     if (fluentSet) {
       const icon = FLUENT.find(item => item.unified === unified)
       if (icon) {
-        s = { src: icon.data }
+        s = { src: CDN_BASE ? icon.url : icon.data }
       } else {
         console.log('Unable to find icon by unified code:', unified)
       }
