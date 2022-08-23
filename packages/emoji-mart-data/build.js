@@ -1,4 +1,6 @@
-const { mkdir, writeFile, rmSync } = require('fs')
+const { mkdir, writeFile, rmSync, readFileSync } = require('fs')
+const path = require('path')
+const glob = require('glob')
 
 const inflection = require('inflection')
 const emojiLib = require('emojilib')
@@ -9,7 +11,7 @@ const DRY_RUN = process.argv.indexOf('--dry') != -1
 
 const VERSIONS = [1, 2, 3, 4, 5, 11, 12, 12.1, 13, 13.1, 14]
 const SKINS = ['1F3FB', '1F3FC', '1F3FD', '1F3FE', '1F3FF']
-const SETS = ['native', 'apple', 'facebook', 'google', 'twitter']
+const SETS = ['native', 'microsoft', 'apple', 'facebook', 'google', 'twitter']
 const CATEGORIES = [
   ['Smileys & Emotion', 'smileys'],
   ['People & Body', 'people'],
@@ -26,6 +28,24 @@ const KEYWORD_SUBSTITUTES = {
   highfive: 'highfive high-five',
 }
 
+const FLUENT = glob.sync(path.resolve('./fluentui-emoji/assets/**/*.json'))
+                .map(file => ({ path: path.dirname(file), meta: JSON.parse(readFileSync(file, 'utf-8').toString()) }))
+                .map(emoji => {
+                  const color = glob.sync(`${emoji.path}/Color/*.svg`)
+                  const flat = glob.sync(`${emoji.path}/Flat/*.svg`)
+                  const mediumColor = glob.sync(`${emoji.path}/Medium/Color/*.svg`)
+                  const mediumFlat = glob.sync(`${emoji.path}/Medium/Color/*.svg`)
+                  if (color[0] || mediumColor[0] || flat[0] || mediumFlat[0]) {
+                    const svg = readFileSync(color[0] || mediumColor[0] || flat[0] || mediumFlat[0], 'utf-8').toString()
+                    const data = `data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, '%27').replace(/"/g, '%22')}`
+                    return [ { unified: emoji.meta.unicode.replace(/\s+/g, '-'), data } ]
+                  } else {
+                    console.log('Unable to find color icon at', emoji.path)
+                    return []
+                  }
+                })
+                .flat()
+
 function unifiedToNative(unified) {
   let unicodes = unified.split('-')
   let codePoints = unicodes.map((u) => `0x${u}`)
@@ -36,6 +56,7 @@ function unifiedToNative(unified) {
 function buildData({ set, version } = {}) {
   const categoriesIndex = {}
   const nativeSet = set == 'native'
+  const fluentSet = set == 'microsoft'
   const data = {
     categories: [],
     emojis: {},
@@ -57,7 +78,7 @@ function buildData({ set, version } = {}) {
   })
 
   emojiData.forEach((datum) => {
-    if (set && !nativeSet) {
+    if (set && !nativeSet && !fluentSet) {
       if (!datum[`has_img_${set}`]) {
         return
       }
@@ -129,7 +150,14 @@ function buildData({ set, version } = {}) {
       })
 
     let s = { unified, native }
-    if (!nativeSet) {
+    if (fluentSet) {
+      const icon = FLUENT.find(item => item.unified === unified)
+      if (icon) {
+        s = { src: icon.data }
+      } else {
+        console.log('Unable to find icon by unified code:', unified)
+      }
+    } else if (!nativeSet) {
       s.x = datum.sheet_x
       s.y = datum.sheet_y
     }
