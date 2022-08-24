@@ -47,6 +47,7 @@ export default function Emoji(props) {
           }}
           alt={emojiSkin.native || emojiSkin.shortcodes}
           src={imageSrc}
+          loading="lazy"
         />
       ) : props.set == 'native' ? (
         <span

@@ -1242,7 +1242,8 @@ function $77ce92f400311234$export$2e2bcd8739ae039(props) {
                 top: '.1em'
             },
             alt: emojiSkin.native || emojiSkin.shortcodes,
-            src: imageSrc
+            src: imageSrc,
+            loading: "lazy"
         }) : props.set == 'native' ? /*#__PURE__*/ $55ec52987511209e$export$34b9dba7ce09269b("span", {
             style: {
                 fontSize: props.size,
