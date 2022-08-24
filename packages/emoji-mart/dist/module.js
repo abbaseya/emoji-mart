@@ -1939,7 +1939,7 @@ class $f81a65d65797a567$export$2e2bcd8739ae039 extends $dc040a17866866fa$export$
 
 
 const $1b22a2469de9cd60$var$Performance = {
-    rowsPerRender: 10
+    rowsPerRender: 1
 };
 class $1b22a2469de9cd60$export$2e2bcd8739ae039 extends $fb96b826c0c5f37a$export$16fa2f45be04daa8 {
     getInitialState(props = this.props) {
@@ -2119,7 +2119,10 @@ class $1b22a2469de9cd60$export$2e2bcd8739ae039 extends $fb96b826c0c5f37a$export$
             });
         }, {
             root: this.refs.scroll.current,
-            rootMargin: `${this.props.emojiButtonSize * ($1b22a2469de9cd60$var$Performance.rowsPerRender + 5)}px 0px ${this.props.emojiButtonSize * $1b22a2469de9cd60$var$Performance.rowsPerRender}px`
+            threshold: '0.1',
+            // rootMargin: '0px',
+            rootMargin: `${// this.props.emojiButtonSize * (Performance.rowsPerRender + 5)
+            this.props.emojiButtonSize * $1b22a2469de9cd60$var$Performance.rowsPerRender}px 0px ${this.props.emojiButtonSize * $1b22a2469de9cd60$var$Performance.rowsPerRender}px`
         });
         for (const { rows: rows  } of this.refs.categories.values()){
             for (const row of rows)if (row.current) observer.observe(row.current);

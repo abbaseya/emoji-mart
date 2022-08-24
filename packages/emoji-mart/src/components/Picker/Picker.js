@@ -10,7 +10,7 @@ import { Navigation } from '../Navigation'
 import { PureInlineComponent } from '../HOCs'
 
 const Performance = {
-  rowsPerRender: 10,
+  rowsPerRender: 1,
 }
 
 export default class Picker extends Component {
@@ -290,8 +290,11 @@ export default class Picker extends Component {
       },
       {
         root: this.refs.scroll.current,
+        threshold: '0.1',
+        // rootMargin: '0px',
         rootMargin: `${
-          this.props.emojiButtonSize * (Performance.rowsPerRender + 5)
+          // this.props.emojiButtonSize * (Performance.rowsPerRender + 5)
+          this.props.emojiButtonSize * Performance.rowsPerRender
         }px 0px ${this.props.emojiButtonSize * Performance.rowsPerRender}px`,
       },
     )
@@ -898,8 +901,7 @@ export default class Picker extends Component {
                 }}
               >
                 {rows.map((row, i) => {
-                  const targetRow =
-                    row.index - (row.index % Performance.rowsPerRender)
+                  const targetRow = row.index - (row.index % Performance.rowsPerRender)
                   const visible = this.state.visibleRows[targetRow]
                   const ref = 'current' in row ? row : undefined
 
