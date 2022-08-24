@@ -31,26 +31,65 @@ const KEYWORD_SUBSTITUTES = {
   highfive: 'highfive high-five',
 }
 
+function getSkinTone(file) {
+  const clean = path.basename(file).replace(/(\(|\))/g, '')
+  const svg = readFileSync(file, 'utf-8').toString()
+  const data = `data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, '%27').replace(/"/g, '%22')}`
+  return {
+    url: `${CDN_BASE}/${clean}`,
+    data, // this will increate output json dramatically!
+    name: clean,
+  }
+}
+
 const FLUENT = glob.sync(path.resolve('./fluentui-emoji/assets/**/*.json'))
                 .map(file => ({ path: path.dirname(file), meta: JSON.parse(readFileSync(file, 'utf-8').toString()) }))
                 .map(emoji => {
                   const color = glob.sync(`${emoji.path}/Color/*.svg`)
                   const flat = glob.sync(`${emoji.path}/Flat/*.svg`)
+                  const darkColor = glob.sync(`${emoji.path}/Dark/Color/*.svg`)
+                  const darkFlat = glob.sync(`${emoji.path}/Dark/Flat/*.svg`)
+                  const defaultColor = glob.sync(`${emoji.path}/Default/Color/*.svg`)
+                  const defaultFlat = glob.sync(`${emoji.path}/Default/Flat/*.svg`)
+                  const lightColor = glob.sync(`${emoji.path}/Light/Color/*.svg`)
+                  const lightFlat = glob.sync(`${emoji.path}/Light/Flat/*.svg`)
                   const mediumColor = glob.sync(`${emoji.path}/Medium/Color/*.svg`)
-                  const mediumFlat = glob.sync(`${emoji.path}/Medium/Color/*.svg`)
-                  const icon = color[0] || mediumColor[0] || flat[0] || mediumFlat[0]
+                  const mediumFlat = glob.sync(`${emoji.path}/Medium/Flat/*.svg`)
+                  const mediumDarkColor = glob.sync(`${emoji.path}/Medium-Dark/Color/*.svg`)
+                  const mediumDarkFlat = glob.sync(`${emoji.path}/Medium-Dark/Flat/*.svg`)
+                  const mediumLightColor = glob.sync(`${emoji.path}/Medium-Light/Color/*.svg`)
+                  const mediumLightFlat = glob.sync(`${emoji.path}/Medium-Light/Flat/*.svg`)
+                  const icon = color[0] || flat[0] || defaultColor[0] || defaultFlat[0]
                   if (icon) {
-                    const clean = path.basename(icon).replace(/(\(|\))/g, '')
-                    const svg = readFileSync(icon, 'utf-8').toString()
-                    const data = `data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, '%27').replace(/"/g, '%22')}`
+                    const unified = emoji.meta.unicode.replace(/\s+/g, '-')
+                    const skins = {}
+                    const skinTones = emoji.meta.unicodeSkintones
+                    if (skinTones) {
+                      skins[unified] = { ...getSkinTone(icon) }
+                      if (lightColor[0] || lightFlat[0]) {
+                        skins[skinTones[1].replace(/\s+/g, '-')] = { ...getSkinTone(lightColor[0] || lightFlat[0]) }
+                      }
+                      if (mediumLightColor[0] || mediumLightFlat[0]) {
+                        skins[skinTones[2].replace(/\s+/g, '-')] = { ...getSkinTone(mediumLightColor[0] || mediumLightFlat[0]) }
+                      }
+                      if (mediumColor[0] || mediumFlat[0]) {
+                        skins[skinTones[3].replace(/\s+/g, '-')] = { ...getSkinTone(mediumColor[0] || mediumFlat[0]) }
+                      }
+                      if (mediumDarkColor[0] || mediumDarkFlat[0]) {
+                        skins[skinTones[4].replace(/\s+/g, '-')] = { ...getSkinTone(mediumDarkColor[0] || mediumDarkFlat[0]) }
+                      }
+                      if (darkColor[0] || darkFlat[0]) {
+                        skins[skinTones[5].replace(/\s+/g, '-')] = { ...getSkinTone(darkColor[0] || darkFlat[0]) }
+                      }
+                    }
                     if (COPY_DEST) {
-                      execSync(`cp ${icon.replace(/\s+/g, '\\ ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')} ${path.resolve(COPY_DEST)}/${clean}`)
+                      execSync(`cp ${icon.replace(/\s+/g, '\\ ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')} ${path.resolve(COPY_DEST)}/${getSkinTone(icon).name}`)
                     }
                     return [ {
-                      unified: emoji.meta.unicode.replace(/\s+/g, '-'),
+                      unified,
                       file: icon,
-                      url: `${CDN_BASE}/${clean}`,
-                      data
+                      skins,
+                      ...getSkinTone(icon),
                     } ]
                   } else {
                     console.log('Unable to find color icon at', emoji.path)
@@ -58,6 +97,9 @@ const FLUENT = glob.sync(path.resolve('./fluentui-emoji/assets/**/*.json'))
                   }
                 })
                 .flat()
+
+// console.log(JSON.stringify(FLUENT, null, 2))
+// process.exit()
 
 function unifiedToNative(unified) {
   let unicodes = unified.split('-')
@@ -168,7 +210,7 @@ function buildData({ set, version } = {}) {
       if (icon) {
         s = { src: CDN_BASE ? icon.url : icon.data }
       } else {
-        console.log('Unable to find icon by unified code:', unified)
+        // console.log('Unable to find icon by unified code:', unified)
       }
     } else if (!nativeSet) {
       s.x = datum.sheet_x
@@ -183,7 +225,7 @@ function buildData({ set, version } = {}) {
           datum.skin_variations[skin] ||
           datum.skin_variations[`${skin}-${skin}`]
 
-        if (!skinDatum || (set && !nativeSet && !skinDatum[`has_img_${set}`])) {
+        if (!skinDatum || (set && !nativeSet && !fluentSet && !skinDatum[`has_img_${set}`])) {
           skins.push(null)
           continue
         }
@@ -191,7 +233,14 @@ function buildData({ set, version } = {}) {
         let unified = skinDatum.unified.toLowerCase()
         let native = unifiedToNative(skinDatum.unified)
         let s = { unified, native }
-        if (!nativeSet) {
+        if (fluentSet) {
+          const skinTone = FLUENT.find(item => Object.keys(item.skins).find(u => u === unified))
+          if (skinTone) {
+            s = { src: CDN_BASE ? skinTone.skins[unified].url : skinTone.skins[unified].data }
+          } else {
+            console.log('Unable to find icon skin tone by unified code:', unified)
+          }
+        } else if (!nativeSet) {
           s.x = skinDatum.sheet_x
           s.y = skinDatum.sheet_y
         }
@@ -259,7 +308,9 @@ function buildData({ set, version } = {}) {
 }
 
 if (!DRY_RUN) {
-  rmSync('sets', { recursive: true })
+  try {
+    rmSync('sets', { recursive: true })
+  } catch {}
 }
 
 for (let version of VERSIONS) {
