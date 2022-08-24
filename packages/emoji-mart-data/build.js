@@ -39,6 +39,7 @@ function getSkinTone(file) {
     url: `${CDN_BASE}/${clean}`,
     data, // this will increate output json dramatically!
     name: clean,
+    file,
   }
 }
 
@@ -83,7 +84,11 @@ const FLUENT = glob.sync(path.resolve('./fluentui-emoji/assets/**/*.json'))
                       }
                     }
                     if (COPY_DEST) {
-                      execSync(`cp ${icon.replace(/\s+/g, '\\ ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')} ${path.resolve(COPY_DEST)}/${getSkinTone(icon).name}`)
+                      if (skinTones) {
+                        Object.values(skins).forEach(skin => execSync(`cp ${skin.file.replace(/\s+/g, '\\ ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')} ${path.resolve(COPY_DEST)}/${skin.name}`))
+                      } else {
+                        execSync(`cp ${icon.replace(/\s+/g, '\\ ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')} ${path.resolve(COPY_DEST)}/${getSkinTone(icon).name}`)
+                      }
                     }
                     return [ {
                       unified,
