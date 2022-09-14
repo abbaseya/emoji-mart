@@ -1899,6 +1899,7 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
             skinToneButton: $0466b583b9423660$var$$fb96b826c0c5f37a$export$7d1e3a5e95ceca43(),
             skinToneRadio: $0466b583b9423660$var$$fb96b826c0c5f37a$export$7d1e3a5e95ceca43()
         };
+        if (typeof this.props.data === 'object') $0466b583b9423660$var$$94a402d4fc0f5991$export$3a6802af14bf5fa6(this.props.data);
         this.initGrid();
         if (this.props.stickySearch == false && this.props.searchPosition == 'sticky') {
             console.warn('[EmojiMart] Deprecation warning: `stickySearch` has been renamed `searchPosition`.');
@@ -1917,7 +1918,6 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
         let initalState = null;
         for(const k in nextProps){
             this.props[k] = nextProps[k];
-            if (k === 'data') $0466b583b9423660$var$$94a402d4fc0f5991$export$3a6802af14bf5fa6(this.props.data);
             if (k === 'custom' || k === 'categories') this.reset();
             else if (k in this.state) {
                 initalState || (initalState = this.getInitialState());
