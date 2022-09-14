@@ -77,7 +77,7 @@ export default class Picker extends Component {
     for (const k in nextProps) {
       this.props[k] = nextProps[k]
 
-      if (k === 'custom' || k === 'categories') {
+      if (k === 'custom' || k === 'categories' || k === 'data') {
         this.reset()
       } else if (k in this.state) {
         initalState || (initalState = this.getInitialState())

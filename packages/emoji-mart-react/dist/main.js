@@ -1915,7 +1915,7 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
         let initalState = null;
         for(const k in nextProps){
             this.props[k] = nextProps[k];
-            if (k === 'custom' || k === 'categories') this.reset();
+            if (k === 'custom' || k === 'categories' || k === 'data') this.reset();
             else if (k in this.state) {
                 initalState || (initalState = this.getInitialState());
                 this.setState({
