@@ -1,6 +1,6 @@
 import { render } from 'preact'
 
-import { init, getProps } from '../../config'
+import { init, getProps, setData } from '../../config'
 import { ShadowElement } from '../HTMLElement'
 import { Picker, PickerStyles } from '.'
 import PickerProps from './PickerProps'
@@ -17,6 +17,10 @@ export default class PickerElement extends ShadowElement {
     props.element = this
     props.ref = (component) => {
       this.component = component
+    }
+
+    if (typeof props.data === 'object') {
+      setData(props.data)
     }
 
     await init(props)

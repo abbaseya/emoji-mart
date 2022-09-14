@@ -44,10 +44,6 @@ export default class Picker extends Component {
       skinToneRadio: createRef(),
     }
 
-    if (typeof this.props.data === 'object') {
-      setData(this.props.data)
-    }
-
     this.initGrid()
 
     if (
