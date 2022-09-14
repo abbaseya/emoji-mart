@@ -44,8 +44,6 @@ export default class Picker extends Component {
       skinToneRadio: createRef(),
     }
 
-    resetData()
-    init(this.props)
     this.initGrid()
 
     if (
@@ -93,6 +91,7 @@ export default class Picker extends Component {
   }
 
   reset() {
+    resetData()
     init(this.props)
 
     this.initGrid()

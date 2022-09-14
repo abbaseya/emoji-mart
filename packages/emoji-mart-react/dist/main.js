@@ -1900,8 +1900,6 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
             skinToneButton: $0466b583b9423660$var$$fb96b826c0c5f37a$export$7d1e3a5e95ceca43(),
             skinToneRadio: $0466b583b9423660$var$$fb96b826c0c5f37a$export$7d1e3a5e95ceca43()
         };
-        $0466b583b9423660$var$$94a402d4fc0f5991$export$5c8df9d6d1ce7015();
-        $0466b583b9423660$export$2cd8252107eb640b(this.props);
         this.initGrid();
         if (this.props.stickySearch == false && this.props.searchPosition == 'sticky') {
             console.warn('[EmojiMart] Deprecation warning: `stickySearch` has been renamed `searchPosition`.');
@@ -1933,6 +1931,7 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
         this.unregister();
     }
     reset() {
+        $0466b583b9423660$var$$94a402d4fc0f5991$export$5c8df9d6d1ce7015();
         $0466b583b9423660$export$2cd8252107eb640b(this.props);
         this.initGrid();
         this.unobserve();
