@@ -836,32 +836,31 @@ function $b79b4feb8fc394aa$export$2cd8252107eb640b(options) {
     if (options) $b79b4feb8fc394aa$var$_init(options);
     return $b79b4feb8fc394aa$var$promise;
 }
-function $b79b4feb8fc394aa$export$5c8df9d6d1ce7015() {
-    $b79b4feb8fc394aa$export$2d0294657ab35f1b = null;
+function $b79b4feb8fc394aa$export$3a6802af14bf5fa6(data) {
+    $b79b4feb8fc394aa$export$2d0294657ab35f1b = data;
+    $b79b4feb8fc394aa$export$2d0294657ab35f1b.emoticons = {
+    };
+    $b79b4feb8fc394aa$export$2d0294657ab35f1b.natives = {
+    };
+    $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.unshift({
+        id: 'frequent',
+        emojis: []
+    });
+    for(const alias in $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases){
+        const emojiId = $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases[alias];
+        const emoji = $b79b4feb8fc394aa$export$2d0294657ab35f1b.emojis[emojiId];
+        if (!emoji) continue;
+        emoji.aliases || (emoji.aliases = []);
+        emoji.aliases.push(alias);
+    }
 }
 async function $b79b4feb8fc394aa$var$_init(props) {
     let { emojiVersion: emojiVersion , set: set , locale: locale  } = props;
     emojiVersion || (emojiVersion = $6191713a0c89d01b$export$2e2bcd8739ae039.emojiVersion.value);
     set || (set = $6191713a0c89d01b$export$2e2bcd8739ae039.set.value);
     locale || (locale = $6191713a0c89d01b$export$2e2bcd8739ae039.locale.value);
-    if (!$b79b4feb8fc394aa$export$2d0294657ab35f1b) {
-        $b79b4feb8fc394aa$export$2d0294657ab35f1b = (typeof props.data === 'function' ? await props.data() : props.data) || await $b79b4feb8fc394aa$var$fetchJSON(`https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/${emojiVersion}/${set}.json`);
-        $b79b4feb8fc394aa$export$2d0294657ab35f1b.emoticons = {
-        };
-        $b79b4feb8fc394aa$export$2d0294657ab35f1b.natives = {
-        };
-        $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.unshift({
-            id: 'frequent',
-            emojis: []
-        });
-        for(const alias in $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases){
-            const emojiId = $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases[alias];
-            const emoji = $b79b4feb8fc394aa$export$2d0294657ab35f1b.emojis[emojiId];
-            if (!emoji) continue;
-            emoji.aliases || (emoji.aliases = []);
-            emoji.aliases.push(alias);
-        }
-    } else $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories = $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.filter((c)=>{
+    if (!$b79b4feb8fc394aa$export$2d0294657ab35f1b) $b79b4feb8fc394aa$export$3a6802af14bf5fa6((typeof props.data === 'function' ? await props.data() : props.data) || await $b79b4feb8fc394aa$var$fetchJSON(`https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/${emojiVersion}/${set}.json`));
+    else $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories = $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.filter((c)=>{
         const isCustom = !!c.name;
         if (!isCustom) return true;
         return false;
@@ -1992,7 +1991,8 @@ class $1221208eb78d1324$export$2e2bcd8739ae039 extends $d5fc6ac583bc94a1$export$
         let initalState = null;
         for(const k in nextProps){
             this.props[k] = nextProps[k];
-            if (k === 'custom' || k === 'categories' || k === 'data') this.reset();
+            if (k === 'data') $b79b4feb8fc394aa$export$3a6802af14bf5fa6(this.props.data);
+            if (k === 'custom' || k === 'categories') this.reset();
             else if (k in this.state) {
                 initalState || (initalState = this.getInitialState());
                 this.setState({
@@ -2005,7 +2005,6 @@ class $1221208eb78d1324$export$2e2bcd8739ae039 extends $d5fc6ac583bc94a1$export$
         this.unregister();
     }
     reset() {
-        $b79b4feb8fc394aa$export$5c8df9d6d1ce7015();
         $b79b4feb8fc394aa$export$2cd8252107eb640b(this.props);
         this.initGrid();
         this.unobserve();

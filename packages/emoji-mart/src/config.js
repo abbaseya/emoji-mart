@@ -31,8 +31,24 @@ export function init(options) {
   return promise
 }
 
-export function resetData() {
-  Data = null
+export function setData(data) {
+  Data = data
+  Data.emoticons = {}
+  Data.natives = {}
+
+  Data.categories.unshift({
+    id: 'frequent',
+    emojis: [],
+  })
+
+  for (const alias in Data.aliases) {
+    const emojiId = Data.aliases[alias]
+    const emoji = Data.emojis[emojiId]
+    if (!emoji) continue
+
+    emoji.aliases || (emoji.aliases = [])
+    emoji.aliases.push(alias)
+  }
 }
 
 async function _init(props) {
@@ -42,28 +58,12 @@ async function _init(props) {
   locale || (locale = PickerProps.locale.value)
 
   if (!Data) {
-    Data =
+    setData(
       (typeof props.data === 'function' ? await props.data() : props.data) ||
-      (await fetchJSON(
-        `https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/${emojiVersion}/${set}.json`,
-      ))
-
-    Data.emoticons = {}
-    Data.natives = {}
-
-    Data.categories.unshift({
-      id: 'frequent',
-      emojis: [],
-    })
-
-    for (const alias in Data.aliases) {
-      const emojiId = Data.aliases[alias]
-      const emoji = Data.emojis[emojiId]
-      if (!emoji) continue
-
-      emoji.aliases || (emoji.aliases = [])
-      emoji.aliases.push(alias)
-    }
+        (await fetchJSON(
+          `https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/${emojiVersion}/${set}.json`,
+        )),
+    )
   } else {
     Data.categories = Data.categories.filter((c) => {
       const isCustom = !!c.name

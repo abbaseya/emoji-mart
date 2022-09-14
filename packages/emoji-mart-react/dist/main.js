@@ -813,32 +813,31 @@ function $0466b583b9423660$export$2cd8252107eb640b(options) {
     if (options) $0466b583b9423660$var$$94a402d4fc0f5991$var$_init(options);
     return $0466b583b9423660$var$$94a402d4fc0f5991$var$promise;
 }
-function $0466b583b9423660$var$$94a402d4fc0f5991$export$5c8df9d6d1ce7015() {
-    $0466b583b9423660$export$2d0294657ab35f1b = null;
+function $0466b583b9423660$var$$94a402d4fc0f5991$export$3a6802af14bf5fa6(data) {
+    $0466b583b9423660$export$2d0294657ab35f1b = data;
+    $0466b583b9423660$export$2d0294657ab35f1b.emoticons = {
+    };
+    $0466b583b9423660$export$2d0294657ab35f1b.natives = {
+    };
+    $0466b583b9423660$export$2d0294657ab35f1b.categories.unshift({
+        id: 'frequent',
+        emojis: []
+    });
+    for(const alias in $0466b583b9423660$export$2d0294657ab35f1b.aliases){
+        const emojiId = $0466b583b9423660$export$2d0294657ab35f1b.aliases[alias];
+        const emoji = $0466b583b9423660$export$2d0294657ab35f1b.emojis[emojiId];
+        if (!emoji) continue;
+        emoji.aliases || (emoji.aliases = []);
+        emoji.aliases.push(alias);
+    }
 }
 async function $0466b583b9423660$var$$94a402d4fc0f5991$var$_init(props) {
     let { emojiVersion: emojiVersion , set: set , locale: locale  } = props;
     emojiVersion || (emojiVersion = $0466b583b9423660$var$$8984b9eb096f95f2$export$2e2bcd8739ae039.emojiVersion.value);
     set || (set = $0466b583b9423660$var$$8984b9eb096f95f2$export$2e2bcd8739ae039.set.value);
     locale || (locale = $0466b583b9423660$var$$8984b9eb096f95f2$export$2e2bcd8739ae039.locale.value);
-    if (!$0466b583b9423660$export$2d0294657ab35f1b) {
-        $0466b583b9423660$export$2d0294657ab35f1b = (typeof props.data === 'function' ? await props.data() : props.data) || await $0466b583b9423660$var$$94a402d4fc0f5991$var$fetchJSON(`https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/${emojiVersion}/${set}.json`);
-        $0466b583b9423660$export$2d0294657ab35f1b.emoticons = {
-        };
-        $0466b583b9423660$export$2d0294657ab35f1b.natives = {
-        };
-        $0466b583b9423660$export$2d0294657ab35f1b.categories.unshift({
-            id: 'frequent',
-            emojis: []
-        });
-        for(const alias in $0466b583b9423660$export$2d0294657ab35f1b.aliases){
-            const emojiId = $0466b583b9423660$export$2d0294657ab35f1b.aliases[alias];
-            const emoji = $0466b583b9423660$export$2d0294657ab35f1b.emojis[emojiId];
-            if (!emoji) continue;
-            emoji.aliases || (emoji.aliases = []);
-            emoji.aliases.push(alias);
-        }
-    } else $0466b583b9423660$export$2d0294657ab35f1b.categories = $0466b583b9423660$export$2d0294657ab35f1b.categories.filter((c)=>{
+    if (!$0466b583b9423660$export$2d0294657ab35f1b) $0466b583b9423660$var$$94a402d4fc0f5991$export$3a6802af14bf5fa6((typeof props.data === 'function' ? await props.data() : props.data) || await $0466b583b9423660$var$$94a402d4fc0f5991$var$fetchJSON(`https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/${emojiVersion}/${set}.json`));
+    else $0466b583b9423660$export$2d0294657ab35f1b.categories = $0466b583b9423660$export$2d0294657ab35f1b.categories.filter((c)=>{
         const isCustom = !!c.name;
         if (!isCustom) return true;
         return false;
@@ -1918,7 +1917,8 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
         let initalState = null;
         for(const k in nextProps){
             this.props[k] = nextProps[k];
-            if (k === 'custom' || k === 'categories' || k === 'data') this.reset();
+            if (k === 'data') $0466b583b9423660$var$$94a402d4fc0f5991$export$3a6802af14bf5fa6(this.props.data);
+            if (k === 'custom' || k === 'categories') this.reset();
             else if (k in this.state) {
                 initalState || (initalState = this.getInitialState());
                 this.setState({
@@ -1931,7 +1931,6 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
         this.unregister();
     }
     reset() {
-        $0466b583b9423660$var$$94a402d4fc0f5991$export$5c8df9d6d1ce7015();
         $0466b583b9423660$export$2cd8252107eb640b(this.props);
         this.initGrid();
         this.unobserve();

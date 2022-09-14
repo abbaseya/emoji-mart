@@ -1,7 +1,7 @@
 import { Component, createRef } from 'preact'
 
 import { deepEqual, sleep } from '../../utils'
-import { Data, I18n, init, resetData } from '../../config'
+import { Data, I18n, init, setData } from '../../config'
 import { SearchIndex, Store, FrequentlyUsed } from '../../helpers'
 import Icons from '../../icons'
 
@@ -77,7 +77,10 @@ export default class Picker extends Component {
     for (const k in nextProps) {
       this.props[k] = nextProps[k]
 
-      if (k === 'custom' || k === 'categories' || k === 'data') {
+      if (k === 'data') {
+        setData(this.props.data)
+      }
+      if (k === 'custom' || k === 'categories') {
         this.reset()
       } else if (k in this.state) {
         initalState || (initalState = this.getInitialState())
@@ -91,7 +94,6 @@ export default class Picker extends Component {
   }
 
   reset() {
-    resetData()
     init(this.props)
 
     this.initGrid()
