@@ -836,6 +836,9 @@ function $b79b4feb8fc394aa$export$2cd8252107eb640b(options) {
     if (options) $b79b4feb8fc394aa$var$_init(options);
     return $b79b4feb8fc394aa$var$promise;
 }
+function $b79b4feb8fc394aa$export$5c8df9d6d1ce7015(options) {
+    $b79b4feb8fc394aa$export$2d0294657ab35f1b = options.data;
+}
 async function $b79b4feb8fc394aa$var$_init(props) {
     let { emojiVersion: emojiVersion , set: set , locale: locale  } = props;
     emojiVersion || (emojiVersion = $6191713a0c89d01b$export$2e2bcd8739ae039.emojiVersion.value);
@@ -1971,6 +1974,7 @@ class $1221208eb78d1324$export$2e2bcd8739ae039 extends $d5fc6ac583bc94a1$export$
             skinToneButton: $d5fc6ac583bc94a1$export$7d1e3a5e95ceca43(),
             skinToneRadio: $d5fc6ac583bc94a1$export$7d1e3a5e95ceca43()
         };
+        $b79b4feb8fc394aa$export$5c8df9d6d1ce7015(this.props);
         this.initGrid();
         if (this.props.stickySearch == false && this.props.searchPosition == 'sticky') {
             console.warn('[EmojiMart] Deprecation warning: `stickySearch` has been renamed `searchPosition`.');

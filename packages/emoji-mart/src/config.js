@@ -31,6 +31,10 @@ export function init(options) {
   return promise
 }
 
+export function resetData(options) {
+  Data = options.data
+}
+
 async function _init(props) {
   let { emojiVersion, set, locale } = props
   emojiVersion || (emojiVersion = PickerProps.emojiVersion.value)

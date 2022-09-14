@@ -1,7 +1,7 @@
 import { Component, createRef } from 'preact'
 
 import { deepEqual, sleep } from '../../utils'
-import { Data, I18n, init } from '../../config'
+import { Data, I18n, init, resetData } from '../../config'
 import { SearchIndex, Store, FrequentlyUsed } from '../../helpers'
 import Icons from '../../icons'
 
@@ -44,6 +44,7 @@ export default class Picker extends Component {
       skinToneRadio: createRef(),
     }
 
+    resetData(this.props)
     this.initGrid()
 
     if (
@@ -901,7 +902,8 @@ export default class Picker extends Component {
                 }}
               >
                 {rows.map((row, i) => {
-                  const targetRow = row.index - (row.index % Performance.rowsPerRender)
+                  const targetRow =
+                    row.index - (row.index % Performance.rowsPerRender)
                   const visible = this.state.visibleRows[targetRow]
                   const ref = 'current' in row ? row : undefined
 

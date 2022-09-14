@@ -813,6 +813,9 @@ function $0466b583b9423660$export$2cd8252107eb640b(options) {
     if (options) $0466b583b9423660$var$$94a402d4fc0f5991$var$_init(options);
     return $0466b583b9423660$var$$94a402d4fc0f5991$var$promise;
 }
+function $0466b583b9423660$var$$94a402d4fc0f5991$export$5c8df9d6d1ce7015(options) {
+    $0466b583b9423660$export$2d0294657ab35f1b = options.data;
+}
 async function $0466b583b9423660$var$$94a402d4fc0f5991$var$_init(props) {
     let { emojiVersion: emojiVersion , set: set , locale: locale  } = props;
     emojiVersion || (emojiVersion = $0466b583b9423660$var$$8984b9eb096f95f2$export$2e2bcd8739ae039.emojiVersion.value);
@@ -1897,6 +1900,7 @@ class $0466b583b9423660$var$$1b22a2469de9cd60$export$2e2bcd8739ae039 extends $04
             skinToneButton: $0466b583b9423660$var$$fb96b826c0c5f37a$export$7d1e3a5e95ceca43(),
             skinToneRadio: $0466b583b9423660$var$$fb96b826c0c5f37a$export$7d1e3a5e95ceca43()
         };
+        $0466b583b9423660$var$$94a402d4fc0f5991$export$5c8df9d6d1ce7015(this.props);
         this.initGrid();
         if (this.props.stickySearch == false && this.props.searchPosition == 'sticky') {
             console.warn('[EmojiMart] Deprecation warning: `stickySearch` has been renamed `searchPosition`.');
