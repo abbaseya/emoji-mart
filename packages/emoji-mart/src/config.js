@@ -31,8 +31,8 @@ export function init(options) {
   return promise
 }
 
-export function resetData(options) {
-  Data = options.data
+export function resetData() {
+  Data = null
 }
 
 async function _init(props) {
