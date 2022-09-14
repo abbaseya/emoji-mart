@@ -837,21 +837,25 @@ function $b79b4feb8fc394aa$export$2cd8252107eb640b(options) {
     return $b79b4feb8fc394aa$var$promise;
 }
 function $b79b4feb8fc394aa$export$3a6802af14bf5fa6(data) {
-    $b79b4feb8fc394aa$export$2d0294657ab35f1b = data;
-    $b79b4feb8fc394aa$export$2d0294657ab35f1b.emoticons = {
-    };
-    $b79b4feb8fc394aa$export$2d0294657ab35f1b.natives = {
-    };
-    $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.unshift({
-        id: 'frequent',
-        emojis: []
-    });
-    for(const alias in $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases){
-        const emojiId = $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases[alias];
-        const emoji = $b79b4feb8fc394aa$export$2d0294657ab35f1b.emojis[emojiId];
-        if (!emoji) continue;
-        emoji.aliases || (emoji.aliases = []);
-        emoji.aliases.push(alias);
+    if (data.constructor === Object) {
+        $b79b4feb8fc394aa$export$2d0294657ab35f1b = {
+            ...data
+        };
+        $b79b4feb8fc394aa$export$2d0294657ab35f1b.emoticons = {
+        };
+        $b79b4feb8fc394aa$export$2d0294657ab35f1b.natives = {
+        };
+        $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.unshift({
+            id: 'frequent',
+            emojis: []
+        });
+        for(const alias in $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases){
+            const emojiId = $b79b4feb8fc394aa$export$2d0294657ab35f1b.aliases[alias];
+            const emoji = $b79b4feb8fc394aa$export$2d0294657ab35f1b.emojis[emojiId];
+            if (!emoji) continue;
+            emoji.aliases || (emoji.aliases = []);
+            emoji.aliases.push(alias);
+        }
     }
 }
 async function $b79b4feb8fc394aa$var$_init(props) {

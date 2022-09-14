@@ -32,22 +32,24 @@ export function init(options) {
 }
 
 export function setData(data) {
-  Data = data
-  Data.emoticons = {}
-  Data.natives = {}
+  if (data.constructor === Object) {
+    Data = { ...data }
+    Data.emoticons = {}
+    Data.natives = {}
 
-  Data.categories.unshift({
-    id: 'frequent',
-    emojis: [],
-  })
+    Data.categories.unshift({
+      id: 'frequent',
+      emojis: [],
+    })
 
-  for (const alias in Data.aliases) {
-    const emojiId = Data.aliases[alias]
-    const emoji = Data.emojis[emojiId]
-    if (!emoji) continue
+    for (const alias in Data.aliases) {
+      const emojiId = Data.aliases[alias]
+      const emoji = Data.emojis[emojiId]
+      if (!emoji) continue
 
-    emoji.aliases || (emoji.aliases = [])
-    emoji.aliases.push(alias)
+      emoji.aliases || (emoji.aliases = [])
+      emoji.aliases.push(alias)
+    }
   }
 }
 

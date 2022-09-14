@@ -814,21 +814,25 @@ function $0466b583b9423660$export$2cd8252107eb640b(options) {
     return $0466b583b9423660$var$$94a402d4fc0f5991$var$promise;
 }
 function $0466b583b9423660$var$$94a402d4fc0f5991$export$3a6802af14bf5fa6(data) {
-    $0466b583b9423660$export$2d0294657ab35f1b = data;
-    $0466b583b9423660$export$2d0294657ab35f1b.emoticons = {
-    };
-    $0466b583b9423660$export$2d0294657ab35f1b.natives = {
-    };
-    $0466b583b9423660$export$2d0294657ab35f1b.categories.unshift({
-        id: 'frequent',
-        emojis: []
-    });
-    for(const alias in $0466b583b9423660$export$2d0294657ab35f1b.aliases){
-        const emojiId = $0466b583b9423660$export$2d0294657ab35f1b.aliases[alias];
-        const emoji = $0466b583b9423660$export$2d0294657ab35f1b.emojis[emojiId];
-        if (!emoji) continue;
-        emoji.aliases || (emoji.aliases = []);
-        emoji.aliases.push(alias);
+    if (data.constructor === Object) {
+        $0466b583b9423660$export$2d0294657ab35f1b = {
+            ...data
+        };
+        $0466b583b9423660$export$2d0294657ab35f1b.emoticons = {
+        };
+        $0466b583b9423660$export$2d0294657ab35f1b.natives = {
+        };
+        $0466b583b9423660$export$2d0294657ab35f1b.categories.unshift({
+            id: 'frequent',
+            emojis: []
+        });
+        for(const alias in $0466b583b9423660$export$2d0294657ab35f1b.aliases){
+            const emojiId = $0466b583b9423660$export$2d0294657ab35f1b.aliases[alias];
+            const emoji = $0466b583b9423660$export$2d0294657ab35f1b.emojis[emojiId];
+            if (!emoji) continue;
+            emoji.aliases || (emoji.aliases = []);
+            emoji.aliases.push(alias);
+        }
     }
 }
 async function $0466b583b9423660$var$$94a402d4fc0f5991$var$_init(props) {
