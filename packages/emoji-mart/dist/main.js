@@ -845,7 +845,8 @@ function $b79b4feb8fc394aa$export$3a6802af14bf5fa6(data) {
         };
         $b79b4feb8fc394aa$export$2d0294657ab35f1b.natives = {
         };
-        $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.unshift({
+        if (!$b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.find((category)=>category.id === 'frequent'
+        )) $b79b4feb8fc394aa$export$2d0294657ab35f1b.categories.unshift({
             id: 'frequent',
             emojis: []
         });

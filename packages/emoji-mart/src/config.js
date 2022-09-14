@@ -37,10 +37,12 @@ export function setData(data) {
     Data.emoticons = {}
     Data.natives = {}
 
-    Data.categories.unshift({
-      id: 'frequent',
-      emojis: [],
-    })
+    if (!Data.categories.find((category) => category.id === 'frequent')) {
+      Data.categories.unshift({
+        id: 'frequent',
+        emojis: [],
+      })
+    }
 
     for (const alias in Data.aliases) {
       const emojiId = Data.aliases[alias]
